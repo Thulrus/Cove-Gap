@@ -1,0 +1,21 @@
+// Public sim API surface. The UI layer (/src/ui) may only import from here —
+// never reach into /src/sim/core or /src/sim/systems directly — so the sim
+// stays swappable/testable independent of React.
+
+export { createRegistry, ContentRegistry } from "./content/registry.js";
+export { createInitialRunState, createInitialMetaState, RUN_STATE_VERSION, META_STATE_VERSION } from "./core/state.js";
+export { tick } from "./core/tick.js";
+export { runOfflineCatchUp } from "./core/offline.js";
+export { computeScore, resolveDeath } from "./core/score.js";
+export {
+  exportRunState,
+  importRunState,
+  exportMetaState,
+  importMetaState,
+  saveRunToStorage,
+  loadRunFromStorage,
+  clearRunFromStorage,
+  saveMetaToStorage,
+  loadMetaFromStorage,
+} from "./core/save.js";
+export { startCraft } from "./systems/crafting.js";

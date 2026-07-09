@@ -1,0 +1,29 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.panels section,
+.app > section {
+  border: 1px solid #8883;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.activity-log {
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+.activity-log .tag {
+  opacity: 0.6;
+}
