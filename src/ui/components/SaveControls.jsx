@@ -24,12 +24,12 @@ export function SaveControls({ onExport, onImport }) {
       <h2>Save</h2>
       <textarea
         rows={4}
-        style={{ width: "100%" }}
+        className="save-textarea"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Base64 save string"
       />
-      <div>
+      <div className="save-actions">
         <button type="button" onClick={handleExport}>
           Export
         </button>

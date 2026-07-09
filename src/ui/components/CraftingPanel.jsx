@@ -14,9 +14,11 @@ export function CraftingPanel({ state, registry, onCraft }) {
       <h2>Crafting</h2>
       <ul>
         {registry.allOfType("recipe").map((recipe) => (
-          <li key={recipe.id}>
-            <strong>{recipe.name}</strong> ({describeRefList(registry, "item", recipe.inputs)} &rarr;{" "}
-            {describeRefList(registry, "item", recipe.outputs)})
+          <li key={recipe.id} className="recipe-row">
+            <span>
+              <strong>{recipe.name}</strong> ({describeRefList(registry, "item", recipe.inputs)} &rarr;{" "}
+              {describeRefList(registry, "item", recipe.outputs)})
+            </span>
             <button type="button" onClick={() => onCraft(recipe.id)}>
               Craft
             </button>

@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   color-scheme: light dark;
   font: 16px/145% system-ui, "Segoe UI", Roboto, sans-serif;
@@ -5,15 +11,19 @@
 
 body {
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 h1,
 h2,
 h3 {
   font-weight: 600;
+  line-height: 1.25;
 }
 
 button {
   font: inherit;
   cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  min-height: 2.75rem;
 }
