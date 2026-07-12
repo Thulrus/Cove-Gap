@@ -19,3 +19,8 @@ export {
   loadMetaFromStorage,
 } from "./core/save.js";
 export { startCraft } from "./systems/crafting.js";
+export { startBuild } from "./systems/construction.js";
+export { startMission } from "./systems/missions.js";
+export { assignWorker, workersAvailable, roleIdleCount } from "./systems/workforce.js";
+export { getActiveJobs } from "./core/jobs.js";
+export { evaluateRequirement } from "./content/requirements.js";

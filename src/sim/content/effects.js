@@ -87,6 +87,23 @@ const EFFECT_HANDLERS = {
     },
   },
 
+  modifyWorkers: {
+    validate(node, path) {
+      assert(typeof node.amount === "number", `${path}.amount must be a number`);
+    },
+    apply(node, ctx) {
+      ctx.state.workers.total = Math.max(0, ctx.state.workers.total + node.amount);
+      const verb = node.amount >= 0 ? "joins" : "leaves";
+      const count = Math.abs(node.amount);
+      return [
+        createLogEntry(ctx.system, "workers_changed", `${count} worker(s) ${verb} the town.`, {
+          amount: node.amount,
+          total: ctx.state.workers.total,
+        }),
+      ];
+    },
+  },
+
   discoverZone: {
     validate(node, path) {
       assert(node.ref && typeof node.ref.id === "string", `${path}.ref.id is required`);

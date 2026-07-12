@@ -11,7 +11,19 @@ import { validateEntityRef } from "./refs.js";
 import { validateRequirementNode } from "./requirements.js";
 import { validateEffectNode } from "./effects.js";
 
-export const CONTENT_TYPES = ["resource", "item", "monster", "zone", "recipe", "quest", "lore", "defense"];
+export const CONTENT_TYPES = [
+  "resource",
+  "item",
+  "monster",
+  "zone",
+  "recipe",
+  "quest",
+  "lore",
+  "defense",
+  "facility",
+  "role",
+  "mission",
+];
 
 function validateResourceFields(entity, path) {
   if (entity.baseProduction !== undefined) {
@@ -93,6 +105,51 @@ function validateDefenseFields(entity, path) {
   }
 }
 
+function validateCostList(list, path) {
+  assertArray(list, path);
+  list.forEach((cost, i) => {
+    assert(cost.ref && typeof cost.ref.id === "string", `${path}[${i}].ref.id is required`);
+    assertPositiveNumber(cost.amount, `${path}[${i}].amount`);
+  });
+}
+
+function validateFacilityFields(entity, path) {
+  validateCostList(entity.buildCost ?? [], `${path}.buildCost`);
+  if (entity.buildTicks !== undefined) assertPositiveNumber(entity.buildTicks, `${path}.buildTicks`);
+}
+
+function validateRoleFields(entity, path) {
+  if (entity.facilityId !== undefined) {
+    assert(typeof entity.facilityId === "string", `${path}.facilityId must be a string`);
+  }
+  if (entity.capacity !== undefined) assertPositiveNumber(entity.capacity, `${path}.capacity`);
+  if (entity.produces !== undefined) {
+    assertArray(entity.produces, `${path}.produces`);
+    entity.produces.forEach((p, i) => {
+      assert(p.ref && typeof p.ref.id === "string", `${path}.produces[${i}].ref.id is required`);
+      assert(typeof p.amountPerWorker === "number", `${path}.produces[${i}].amountPerWorker must be a number`);
+    });
+  }
+  if (entity.missionPool !== undefined) {
+    assertArray(entity.missionPool, `${path}.missionPool`);
+    entity.missionPool.forEach((id, i) => assert(typeof id === "string", `${path}.missionPool[${i}] must be a string`));
+  }
+}
+
+function validateMissionFields(entity, path) {
+  assert(typeof entity.roleId === "string", `${path}.roleId is required`);
+  assert(entity.workerCost && typeof entity.workerCost === "object", `${path}.workerCost is required`);
+  assertPositiveNumber(entity.workerCost.min, `${path}.workerCost.min`);
+  assertPositiveNumber(entity.workerCost.max, `${path}.workerCost.max`);
+  assert(entity.workerCost.max >= entity.workerCost.min, `${path}.workerCost.max must be >= min`);
+  assertPositiveNumber(entity.durationTicks, `${path}.durationTicks`);
+  if (entity.effects !== undefined) {
+    assertArray(entity.effects, `${path}.effects`);
+    entity.effects.forEach((effect, i) => validateEffectNode(effect, `${path}.effects[${i}]`));
+  }
+  if (entity.repeatable !== undefined) assert(typeof entity.repeatable === "boolean", `${path}.repeatable must be a boolean`);
+}
+
 const TYPE_VALIDATORS = {
   resource: validateResourceFields,
   item: validateItemFields,
@@ -102,6 +159,9 @@ const TYPE_VALIDATORS = {
   quest: validateQuestFields,
   lore: validateLoreFields,
   defense: validateDefenseFields,
+  facility: validateFacilityFields,
+  role: validateRoleFields,
+  mission: validateMissionFields,
 };
 
 export function validateEntity(entity, path) {

@@ -10,6 +10,9 @@ import { recipes } from "./recipes/index.js";
 import { quests } from "./quests/index.js";
 import { lore } from "./lore/index.js";
 import { defenses } from "./defenses/index.js";
+import { facilities } from "./facilities/index.js";
+import { roles } from "./roles/index.js";
+import { missions } from "./missions/index.js";
 
 export const contentByType = {
   resource: resources,
@@ -20,4 +23,7 @@ export const contentByType = {
   quest: quests,
   lore,
   defense: defenses,
+  facility: facilities,
+  role: roles,
+  mission: missions,
 };

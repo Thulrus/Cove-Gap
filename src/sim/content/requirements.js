@@ -56,6 +56,24 @@ const REQUIREMENT_HANDLERS = {
       return !!ctx.state.flags[node.id] === (node.value ?? true);
     },
   },
+  facilityBuilt: {
+    validate(node, path) {
+      assert(node.ref && typeof node.ref.id === "string", `${path}.ref.id is required`);
+    },
+    evaluate(node, ctx) {
+      return ctx.state.builtFacilities.includes(node.ref.id);
+    },
+  },
+  workersAssigned: {
+    validate(node, path) {
+      assert(node.ref && typeof node.ref.id === "string", `${path}.ref.id is required`);
+      if (node.count !== undefined) assert(typeof node.count === "number", `${path}.count must be a number`);
+    },
+    evaluate(node, ctx) {
+      const assigned = ctx.state.workers.assignments[node.ref.id] ?? 0;
+      return assigned >= (node.count ?? 1);
+    },
+  },
 };
 
 export function validateRequirementNode(node, path = "requirements") {

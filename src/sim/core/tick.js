@@ -6,19 +6,23 @@
 import { runProductionSystem } from "../systems/production.js";
 import { runInvestigationSystem } from "../systems/investigation.js";
 import { runCraftingSystem } from "../systems/crafting.js";
+import { runConstructionSystem } from "../systems/construction.js";
+import { runMissionSystem } from "../systems/missions.js";
 import { runDefenseSystem } from "../systems/defense.js";
 import { runEventsSystem } from "../systems/events.js";
 import { runCombatSystem } from "../systems/combat.js";
 import { runQuestSystem } from "../systems/quests.js";
 import { appendActivityLog } from "./log.js";
 
-// The six systems below run in this fixed order per the sim design. Quest
+// The systems below run in this fixed order per the sim design. Quest
 // progression is checked afterward — see systems/quests.js for why it isn't
-// one of the six.
+// one of them.
 const SYSTEMS_IN_ORDER = [
   runProductionSystem,
   runInvestigationSystem,
   runCraftingSystem,
+  runConstructionSystem,
+  runMissionSystem,
   runDefenseSystem,
   runEventsSystem,
   runCombatSystem,

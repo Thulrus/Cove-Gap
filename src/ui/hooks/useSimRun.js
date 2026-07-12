@@ -20,6 +20,10 @@ import {
   loadMetaFromStorage,
   resolveDeath,
   startCraft,
+  startBuild,
+  startMission,
+  assignWorker,
+  getActiveJobs,
 } from "../../sim/index.js";
 
 const TICK_MS = 1000;
@@ -65,6 +69,24 @@ export function useSimRun() {
     forceRender();
   }
 
+  function build(facilityId) {
+    startBuild(stateRef.current, registryRef.current, facilityId);
+    saveRunToStorage(stateRef.current);
+    forceRender();
+  }
+
+  function sendOnMission(missionId, workerCount) {
+    startMission(stateRef.current, registryRef.current, missionId, workerCount);
+    saveRunToStorage(stateRef.current);
+    forceRender();
+  }
+
+  function assign(roleId, delta) {
+    assignWorker(stateRef.current, registryRef.current, roleId, delta);
+    saveRunToStorage(stateRef.current);
+    forceRender();
+  }
+
   function startNewRun(seed = makeSeed()) {
     const { metaState } = resolveDeath(stateRef.current, metaRef.current, stateRef.current.activityLog);
     metaRef.current = metaState;
@@ -98,6 +120,10 @@ export function useSimRun() {
     registry: registryRef.current,
     offlineSummary: offlineSummaryRef.current,
     craft,
+    build,
+    sendOnMission,
+    assign,
+    activeJobs: getActiveJobs(stateRef.current, registryRef.current),
     startNewRun,
     dismissOfflineSummary,
     exportSave,
