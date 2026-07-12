@@ -10,7 +10,7 @@ export const META_STATE_VERSION = 1;
 // Game balance, not content: how many workers the town starts with. The cast
 // is deliberately small and fixed — this is a claustrophobic-scale sim, not
 // one where headcount itself is a scaling axis.
-const STARTING_WORKERS = 6;
+export const STARTING_WORKERS = 6;
 
 /**
  * @param {string} seed

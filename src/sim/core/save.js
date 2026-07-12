@@ -1,7 +1,7 @@
 // Save/load: JSON -> base64 export string, with a version field and a
 // migration hook now so future format changes don't need a rewrite later.
 
-import { RUN_STATE_VERSION, META_STATE_VERSION } from "./state.js";
+import { RUN_STATE_VERSION, META_STATE_VERSION, STARTING_WORKERS } from "./state.js";
 
 function toBase64(str) {
   const bytes = new TextEncoder().encode(str);
@@ -17,9 +17,19 @@ function fromBase64(base64) {
 }
 
 function migrateRunState(data) {
+  if (data.version === 1) {
+    // v2 added the worker-placement layer: workers/facilities/construction/missions.
+    data = {
+      ...data,
+      version: 2,
+      workers: { total: STARTING_WORKERS, assignments: {} },
+      builtFacilities: [],
+      constructionQueue: [],
+      activeMissions: [],
+      nextMissionInstanceId: 1,
+    };
+  }
   if (data.version === RUN_STATE_VERSION) return data;
-  // Future migrations go here, e.g.:
-  // if (data.version === 1) { data = { ...data, version: 2, newField: default }; }
   throw new Error(`Cannot load run save: unknown version "${data.version}"`);
 }
 
