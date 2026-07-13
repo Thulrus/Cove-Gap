@@ -1,4 +1,5 @@
 import { ProgressBar } from "./ProgressBar.jsx";
+import { ticksToHours } from "../../sim/index.js";
 
 function describeRefList(registry, type, refs) {
   return refs
@@ -31,7 +32,9 @@ export function CraftingPanel({ state, registry, onCraft }) {
         <div key={i} className="job-row">
           <div className="job-row-label">
             <span>{registry.getById("recipe", job.recipeId).name}</span>
-            <span>{job.remainingTicks} tick(s) left</span>
+            <span>
+              {ticksToHours(job.remainingTicks)} hour{ticksToHours(job.remainingTicks) === 1 ? "" : "s"} left
+            </span>
           </div>
           <ProgressBar
             value={registry.getById("recipe", job.recipeId).craftTicks - job.remainingTicks}

@@ -66,6 +66,40 @@
   font-weight: 600;
 }
 
+/* Day/night sun-moon arc */
+.day-night-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.day-night-arc {
+  width: 100%;
+  max-width: 9rem;
+  height: auto;
+}
+
+.day-night-arc path {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+
+.day-night-arc .sun {
+  fill: var(--color-warn);
+}
+
+.day-night-arc .moon {
+  fill: var(--color-text-muted);
+}
+
+.day-night-label {
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
 .resource-ticker {
   display: flex;
   flex-wrap: wrap;

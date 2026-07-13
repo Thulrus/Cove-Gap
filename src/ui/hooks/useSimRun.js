@@ -24,9 +24,13 @@ import {
   startMission,
   assignWorker,
   getActiveJobs,
+  PROD_TICK_MS,
+  DEV_TICK_MS,
 } from "../../sim/index.js";
 
-const TICK_MS = 1000;
+// Dev builds tick fast so a full day cycles in seconds while testing; the
+// shipped game ticks slowly enough that players can read what changed.
+const TICK_MS = import.meta.env.DEV ? DEV_TICK_MS : PROD_TICK_MS;
 
 function makeSeed() {
   return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `seed-${Date.now()}`;

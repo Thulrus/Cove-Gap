@@ -1,4 +1,4 @@
-import { evaluateRequirement, roleIdleCount } from "../../sim/index.js";
+import { evaluateRequirement, roleIdleCount, ticksToHours } from "../../sim/index.js";
 import { ProgressBar } from "./ProgressBar.jsx";
 
 function canAffordFacility(state, registry, facility) {
@@ -16,7 +16,9 @@ export function JobsInProgress({ activeJobs }) {
               <span className="job-row-tag">[{job.kind}]</span>
               {job.label}
             </span>
-            <span>{job.remainingTicks} tick(s) left</span>
+            <span>
+              {ticksToHours(job.remainingTicks)} hour{ticksToHours(job.remainingTicks) === 1 ? "" : "s"} left
+            </span>
           </div>
           <ProgressBar
             value={(job.totalTicks ?? job.remainingTicks) - job.remainingTicks}
@@ -67,7 +69,7 @@ export function AvailableJobs({ state, registry, onBuild, onSendOnMission }) {
           <div key={mission.id} className="recipe-row">
             <span>
               <strong>{mission.name}</strong> — {mission.description} ({mission.workerCost.min}-{mission.workerCost.max}{" "}
-              workers, {mission.durationTicks} ticks)
+              workers, {ticksToHours(mission.durationTicks)} hour{ticksToHours(mission.durationTicks) === 1 ? "" : "s"})
             </span>
             <button type="button" className="primary" onClick={() => onSendOnMission(mission.id, workerCount)}>
               Send {workerCount}

@@ -1,5 +1,7 @@
 import { productionRate } from "../lib/productionRate.js";
 import { ProgressBar } from "./ProgressBar.jsx";
+import { DayNightIndicator } from "./DayNightIndicator.jsx";
+import { TICKS_PER_HOUR } from "../../sim/index.js";
 
 export function DashboardStrip({ state, registry }) {
   const healthPct = state.town.health / state.town.maxHealth;
@@ -23,8 +25,8 @@ export function DashboardStrip({ state, registry }) {
       </div>
 
       <div className="panel">
-        <p className="dashboard-stat-label">Tick</p>
-        <p className="dashboard-stat-value">{state.tick}</p>
+        <p className="dashboard-stat-label">Time</p>
+        <DayNightIndicator tick={state.tick} />
       </div>
 
       <div className="panel">
@@ -32,15 +34,16 @@ export function DashboardStrip({ state, registry }) {
         <div className="resource-ticker">
           {registry.allOfType("resource").map((resource) => {
             const rate = productionRate(state, registry, resource.id);
+            const hourlyRate = Math.round(rate * TICKS_PER_HOUR * 100) / 100;
             const amount = Math.floor((state.resources[resource.id] ?? 0) * 100) / 100;
             return (
               <span key={resource.id} className="resource-ticker-item">
                 {resource.name}: {amount}
-                {rate !== 0 && (
-                  <span className={`resource-ticker-rate ${rate > 0 ? "positive" : "negative"}`}>
+                {hourlyRate !== 0 && (
+                  <span className={`resource-ticker-rate ${hourlyRate > 0 ? "positive" : "negative"}`}>
                     {" "}
-                    ({rate > 0 ? "+" : ""}
-                    {rate}/tick)
+                    ({hourlyRate > 0 ? "+" : ""}
+                    {hourlyRate}/hr)
                   </span>
                 )}
               </span>

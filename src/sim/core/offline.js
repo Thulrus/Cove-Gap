@@ -3,11 +3,11 @@
 // there's only one code path to keep deterministic.
 
 import { tick } from "./tick.js";
+import { PROD_TICK_MS } from "./time.js";
 
-const DEFAULT_TICK_MS = 1000;
 const MAX_OFFLINE_TICKS = 60 * 60 * 24; // cap catch-up to a day's worth of ticks
 
-export function runOfflineCatchUp(state, registry, { tickMs = DEFAULT_TICK_MS, now = Date.now() } = {}) {
+export function runOfflineCatchUp(state, registry, { tickMs = PROD_TICK_MS, now = Date.now() } = {}) {
   const elapsedMs = Math.max(0, now - state.lastTickAt);
   const ticksToRun = Math.min(Math.floor(elapsedMs / tickMs), MAX_OFFLINE_TICKS);
 

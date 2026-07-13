@@ -1,4 +1,4 @@
-import { computeScore } from "../../sim/index.js";
+import { computeScore, formatDuration } from "../../sim/index.js";
 
 export function DeathScreen({ state, onStartNewRun }) {
   const result = computeScore(state, state.activityLog);
@@ -8,7 +8,7 @@ export function DeathScreen({ state, onStartNewRun }) {
       <p>{result.summary}</p>
       <div className="town-grid" style={{ justifyContent: "center", margin: "var(--space-4) 0" }}>
         <span className="town-tile">Score: {result.score}</span>
-        <span className="town-tile">Ticks survived: {result.breakdown.ticksSurvived}</span>
+        <span className="town-tile">Survived: {formatDuration(result.breakdown.ticksSurvived)}</span>
         <span className="town-tile">Zones discovered: {result.breakdown.zonesDiscovered}</span>
         <span className="town-tile">Quests completed: {result.breakdown.questsCompleted}</span>
       </div>
