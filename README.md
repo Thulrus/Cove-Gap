@@ -2,11 +2,45 @@
 
 **[▶ Play Cove Gap](https://thulrus.github.io/Cove-Gap/)**
 
-An incremental/idle roguelike that runs entirely in the browser — no account,
-no server, no install. Set in a small town in Eastern Kentucky in the early
-1800s, where some strange things have been happening.
+## The world
+
+Eastern Kentucky, early 1800s. A congregation called **the Brotherhood of
+Light** left the settled world behind to build a righteous life somewhere no
+one would interfere with how they worshipped and governed themselves. They
+found a cove — a bowl of flat, fertile bottomland ringed by defensible ridges
+— centered on a clearing with a massive tree and a spring-fed pond. It looked
+like a sign from God. They built their town there.
+
+It wasn't empty land. It was just old, and patient, and hadn't had a reason
+to notice anyone yet.
+
+The forest around Cove Gap isn't haunted by ghosts or ruled by devils — it's
+*occupied* by something closer to the land itself occasionally waking up
+enough, in one place, to act like a god for a while. These presences don't
+hate the town. They don't hate anything. They're vastly old expressions of
+elemental truths — Hunger, Rot, Growth, Water, Stone — and the town is, to
+them, a very new and very small thing that happens to be in the way. Nothing here can be bargained with, appeased in
+the usual sense, or defeated for good. It can only be *survived*, for a
+while.
+
+The Brotherhood's faith isn't wrong, exactly, and it isn't right either —
+some of their rites and wards actually work, mechanically, while
+fundamentally misunderstanding what they're warding against. That tension —
+right practice, wrong theology — runs through the whole game.
+
+**The town is going to fall. That's not a failure state — it's the premise.**
+The only question the game asks is: *how long can you make it last, and what
+do you learn about the dark before it does?*
+
+See [`cove-gap-lore-introduction.md`](cove-gap-lore-introduction.md) for the
+full mythos outline and tone guide, and
+[`cove-gap-design-roadmap.md`](cove-gap-design-roadmap.md) for how that lore
+is meant to translate into content and systems.
 
 ## About the game
+
+Cove Gap is an incremental/idle roguelike that runs entirely in the browser —
+no account, no server, no install.
 
 You're managing a frontier settlement: gather resources, craft equipment,
 defend the town, and send folks out to investigate the surrounding zones —
@@ -27,6 +61,11 @@ Core loop:
 - **Quests & lore** — story beats like *The Stranger at the Treeline* unlock
   new areas, items, and codex entries that build out the setting.
 - **Save/load** — export and import your run as a save file at any time.
+
+Every run ends the same way — the town falls — but randomization in what
+threatens it, in what order, and what the town discovers along the way means
+no two runs get there the same way. See the roadmap doc for how that's meant
+to work.
 
 The game is data-driven: monsters, items, recipes, zones, quests, and lore
 are all defined as plain content objects (see `src/content/`) and interpreted

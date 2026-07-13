@@ -4,18 +4,17 @@
 
 Cove Gap is not haunted. It is *occupied*. The woods around it were old before there were words for old, and what lives in them does not hate the town — it barely notices it, the way a mountain doesn't notice the moss on one particular stone. That indifference is the engine of the horror here: not malevolence, but scale. The settlers came to build a righteous life in what they read as empty wilderness. It was never empty. It was just patient.
 
-This is the tonal needle to thread throughout: **dread from scale and unknowability, not from villainy.** The boar doesn't hunt the town because it's cruel. It eats because it has always eaten, and it is very old, and the town is, geologically speaking, a very new and very small thing standing in its way.
+This is the tonal needle to thread throughout: **dread from scale and unknowability, not from villainy.** The being doesn't hunt the town because it's cruel. It eats because it has always eaten, and it is very old, and the town is, geologically speaking, a very new and very small thing standing in its way.
 
 ## 1. The Founding
 
-A congregation — call them something like the **Cove Gap Compact** or **the Faithful of the New Vale** (working titles, yours to rename) — left a more settled part of the country seeking land remote enough that no one would interfere with how they worshipped and governed themselves. Eastern Kentucky's folded, hard-to-reach hollows were perfect for that: isolation as a feature, not a bug. They picked a cove — a bowl of flat bottomland ringed by ridges — because it was defensible, arable, and hidden.
+A congregation — called **The Brotherhood of Light** — left a more settled part of the country seeking land remote enough that no one would interfere with how they worshipped and governed themselves. Eastern Kentucky's folded, hard-to-reach hollows were perfect for that: isolation as a feature, not a bug. They picked a cove — a bowl of flat bottomland ringed by ridges — because it was defensible, arable, and hidden.
 
-Useful founding details to nail down as you draft:
-- **What exactly they believed**, and how strict/literal their theology is. This matters mechanically later — you'll want their faith to function as something (a real ward, a false comfort, a partial truth) rather than pure set dressing.
-- **Why *this* cove specifically.** Did they choose it blind, or was there already a reason — a spring, a natural formation, an old marker they misread as a good omen rather than a warning?
-- **The first bad winter/first loss.** Every founding myth needs the moment belief met reality. This is your "we didn't know what we'd moved next to" beat, and it's good material for early-game lore fragments.
+The Brotherhood chose the location of their town based on the fertility of the area and the protective nature of the surrounding geography, but the thing that drew them to this exact spot was their discovery of a large clearing with a massive tree in the middle, and a beautiful spring feeding a clear pond. They assumed that all these things were a good omen, but they did not realize that they were intruding on an ancient place that was beyond their understanding.
 
-## 2. The Core Mythos: "The Old Green" (working name)
+The Brotherhood has strict beliefs that are very rigid, but we don't want to define any specific theology for them so as nto to offend any group.
+
+## 2. The Core Mythos: "The Dark Green"
 
 Resist calling this a pantheon of "gods" in the Greek sense — no thrones, no court, no clean anthropomorphized personalities. Appalachian-cosmic-horror works better as **the forest itself having ancient, semi-discrete regions of awareness** — vast old presences that are *of* the land rather than ruling *over* it. A useful mental model: not gods who live in the woods, but the woods occasionally *waking up enough in one place* to be a god for a while.
 
@@ -51,15 +50,3 @@ Concrete rules of thumb to keep every future entity/lore beat consistent with th
 ## 4. A Careful Note on the "Ancient Appalachian Gods" Framing
 
 Real Appalachian folklore and the mythologies of the Indigenous peoples of the region (Cherokee, Shawnee, and others) are living traditions, not a public-domain aesthetic to lift wholesale — worth treating as inspiration for *tone and texture* (oral folk-naming conventions, land-as-character, omens-and-signs storytelling) rather than borrowing specific real deities, spirits, or sacred stories directly. Inventing your own wholly fictional Aspects/entities (as above) gets you the flavor you want without that problem, and honestly gives you more creative freedom since you're not constrained by an existing canon.
-
-## 5. Suggested Next Passes (in order)
-
-1. **Nail down the Compact's theology** — specific enough that you can write believable in-world journal fragments and sermon snippets later.
-2. **Name and fully write 1 primary entity + 2-3 lesser ones**, each tied to an Aspect, each with a folk name, an evidence trail, and a "true encounter" description.
-3. **Draft the founding incident** — the first bad winter/first loss — as an actual short narrative piece. This becomes your prologue text and probably your first handful of lore-fragment content entries.
-4. **Sketch the geography** — name the ridges, the hollows, the creek, the old road — so investigation zones have real identity before you generate them procedurally. Real place-feeling names do a lot of atmospheric work cheaply.
-5. **Decide the town's current-day relationship to the truth** — do most townsfolk *know* what's out there and simply endure it, or is denial/euphemism part of the culture (calling a massacre "the hard winter," etc.)? This affects your quest and dialogue writing tone a lot.
-
----
-
-This should be enough scaffolding to start actually writing prose. Want to move next into drafting the Compact's theology and the founding incident narrative, or start naming and detailing the entity roster?
