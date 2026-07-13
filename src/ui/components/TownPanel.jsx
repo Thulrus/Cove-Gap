@@ -4,7 +4,7 @@ export function TownPanel({ state, registry }) {
   const zones = state.discoveredZones.map((id) => registry.getById("zone", id));
 
   return (
-    <section>
+    <section className="panel">
       <h2>Cove Gap</h2>
       <div className="town-grid">
         {facilities.map((f) => (
@@ -24,6 +24,9 @@ export function TownPanel({ state, registry }) {
         ))}
         {facilities.length === 0 && defenses.length === 0 && zones.length === 0 && <span>(just a fenced town square, so far)</span>}
       </div>
+      <p className="dashboard-stat-label" style={{ marginTop: "var(--space-3)" }}>
+        Seed: {state.seed}
+      </p>
     </section>
   );
 }

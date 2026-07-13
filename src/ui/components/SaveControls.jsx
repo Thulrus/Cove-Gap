@@ -20,8 +20,8 @@ export function SaveControls({ onExport, onImport }) {
   }
 
   return (
-    <section>
-      <h2>Save</h2>
+    <div>
+      <p className="dashboard-stat-label">Export/import your run as a save string.</p>
       <textarea
         rows={4}
         className="save-textarea"
@@ -30,14 +30,14 @@ export function SaveControls({ onExport, onImport }) {
         placeholder="Base64 save string"
       />
       <div className="save-actions">
-        <button type="button" onClick={handleExport}>
+        <button type="button" className="primary" onClick={handleExport}>
           Export
         </button>
         <button type="button" onClick={handleImport}>
           Import
         </button>
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </section>
+      {error && <p style={{ color: "var(--color-danger)" }}>{error}</p>}
+    </div>
   );
 }

@@ -1,3 +1,5 @@
+import { ProgressBar } from "./ProgressBar.jsx";
+
 function describeRefList(registry, type, refs) {
   return refs
     .map((ref) => {
@@ -10,31 +12,34 @@ function describeRefList(registry, type, refs) {
 
 export function CraftingPanel({ state, registry, onCraft }) {
   return (
-    <section>
+    <section className="panel">
       <h2>Crafting</h2>
-      <ul>
-        {registry.allOfType("recipe").map((recipe) => (
-          <li key={recipe.id} className="recipe-row">
-            <span>
-              <strong>{recipe.name}</strong> ({describeRefList(registry, "item", recipe.inputs)} &rarr;{" "}
-              {describeRefList(registry, "item", recipe.outputs)})
-            </span>
-            <button type="button" onClick={() => onCraft(recipe.id)}>
-              Craft
-            </button>
-          </li>
-        ))}
-      </ul>
+      {registry.allOfType("recipe").map((recipe) => (
+        <div key={recipe.id} className="recipe-row">
+          <span>
+            <strong>{recipe.name}</strong> ({describeRefList(registry, "item", recipe.inputs)} &rarr;{" "}
+            {describeRefList(registry, "item", recipe.outputs)})
+          </span>
+          <button type="button" className="primary" onClick={() => onCraft(recipe.id)}>
+            Craft
+          </button>
+        </div>
+      ))}
 
       <h3>Crafting Queue</h3>
-      <ul>
-        {state.craftingQueue.map((job, i) => (
-          <li key={i}>
-            {registry.getById("recipe", job.recipeId).name} — {job.remainingTicks} tick(s) left
-          </li>
-        ))}
-        {state.craftingQueue.length === 0 && <li>(idle)</li>}
-      </ul>
+      {state.craftingQueue.map((job, i) => (
+        <div key={i} className="job-row">
+          <div className="job-row-label">
+            <span>{registry.getById("recipe", job.recipeId).name}</span>
+            <span>{job.remainingTicks} tick(s) left</span>
+          </div>
+          <ProgressBar
+            value={registry.getById("recipe", job.recipeId).craftTicks - job.remainingTicks}
+            max={registry.getById("recipe", job.recipeId).craftTicks}
+          />
+        </div>
+      ))}
+      {state.craftingQueue.length === 0 && <p>(idle)</p>}
     </section>
   );
 }

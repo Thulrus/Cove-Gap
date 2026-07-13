@@ -1,10 +1,35 @@
 import { evaluateRequirement, roleIdleCount } from "../../sim/index.js";
+import { ProgressBar } from "./ProgressBar.jsx";
 
 function canAffordFacility(state, registry, facility) {
   return (facility.buildCost ?? []).every((c) => (state.resources[c.ref.id] ?? 0) >= c.amount);
 }
 
-export function JobsPanel({ state, registry, activeJobs, onBuild, onSendOnMission }) {
+export function JobsInProgress({ activeJobs }) {
+  return (
+    <section className="panel">
+      <h2>Jobs In Progress</h2>
+      {activeJobs.map((job) => (
+        <div key={job.id} className="job-row">
+          <div className="job-row-label">
+            <span>
+              <span className="job-row-tag">[{job.kind}]</span>
+              {job.label}
+            </span>
+            <span>{job.remainingTicks} tick(s) left</span>
+          </div>
+          <ProgressBar
+            value={(job.totalTicks ?? job.remainingTicks) - job.remainingTicks}
+            max={job.totalTicks ?? job.remainingTicks}
+          />
+        </div>
+      ))}
+      {activeJobs.length === 0 && <p>(nothing in progress)</p>}
+    </section>
+  );
+}
+
+export function AvailableJobs({ state, registry, onBuild, onSendOnMission }) {
   const ctx = { state, registry };
 
   const buildableFacilities = registry.allOfType("facility").filter(
@@ -20,53 +45,37 @@ export function JobsPanel({ state, registry, activeJobs, onBuild, onSendOnMissio
     .filter((mission) => roleIdleCount(state, mission.roleId) >= mission.workerCost.min && evaluateRequirement(mission.requirements, ctx));
 
   return (
-    <section>
-      <h2>Jobs</h2>
+    <section className="panel">
+      <h2>Available to Build</h2>
+      {buildableFacilities.map((facility) => (
+        <div key={facility.id} className="recipe-row">
+          <span>
+            <strong>{facility.name}</strong> — {facility.description}
+          </span>
+          <button type="button" className="primary" onClick={() => onBuild(facility.id)}>
+            Build
+          </button>
+        </div>
+      ))}
+      {buildableFacilities.length === 0 && <p>(none available)</p>}
 
-      <h3>In Progress</h3>
-      <ul>
-        {activeJobs.map((job) => (
-          <li key={job.id}>
-            [{job.kind}] {job.label} — {job.remainingTicks} tick(s) left
-          </li>
-        ))}
-        {activeJobs.length === 0 && <li>(nothing in progress)</li>}
-      </ul>
-
-      <h3>Available to Build</h3>
-      <ul>
-        {buildableFacilities.map((facility) => (
-          <li key={facility.id} className="recipe-row">
+      <h2>Available Missions</h2>
+      {startableMissions.map((mission) => {
+        const idle = roleIdleCount(state, mission.roleId);
+        const workerCount = Math.min(idle, mission.workerCost.max);
+        return (
+          <div key={mission.id} className="recipe-row">
             <span>
-              <strong>{facility.name}</strong> — {facility.description}
+              <strong>{mission.name}</strong> — {mission.description} ({mission.workerCost.min}-{mission.workerCost.max}{" "}
+              workers, {mission.durationTicks} ticks)
             </span>
-            <button type="button" onClick={() => onBuild(facility.id)}>
-              Build
+            <button type="button" className="primary" onClick={() => onSendOnMission(mission.id, workerCount)}>
+              Send {workerCount}
             </button>
-          </li>
-        ))}
-        {buildableFacilities.length === 0 && <li>(none available)</li>}
-      </ul>
-
-      <h3>Available Missions</h3>
-      <ul>
-        {startableMissions.map((mission) => {
-          const idle = roleIdleCount(state, mission.roleId);
-          const workerCount = Math.min(idle, mission.workerCost.max);
-          return (
-            <li key={mission.id} className="recipe-row">
-              <span>
-                <strong>{mission.name}</strong> — {mission.description} ({mission.workerCost.min}-{mission.workerCost.max}{" "}
-                workers, {mission.durationTicks} ticks)
-              </span>
-              <button type="button" onClick={() => onSendOnMission(mission.id, workerCount)}>
-                Send {workerCount}
-              </button>
-            </li>
-          );
-        })}
-        {startableMissions.length === 0 && <li>(none available)</li>}
-      </ul>
+          </div>
+        );
+      })}
+      {startableMissions.length === 0 && <p>(none available)</p>}
     </section>
   );
 }

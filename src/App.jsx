@@ -1,14 +1,23 @@
+import { useState } from "react";
 import "./App.css";
 import { useSimRun } from "./ui/hooks/useSimRun.js";
 import { ResourcePanel } from "./ui/components/ResourcePanel.jsx";
-import { ActivityLog } from "./ui/components/ActivityLog.jsx";
 import { CraftingPanel } from "./ui/components/CraftingPanel.jsx";
-import { SaveControls } from "./ui/components/SaveControls.jsx";
 import { DeathScreen } from "./ui/components/DeathScreen.jsx";
 import { OfflineSummaryBanner } from "./ui/components/OfflineSummaryBanner.jsx";
 import { TownPanel } from "./ui/components/TownPanel.jsx";
 import { WorkforcePanel } from "./ui/components/WorkforcePanel.jsx";
-import { JobsPanel } from "./ui/components/JobsPanel.jsx";
+import { JobsInProgress, AvailableJobs } from "./ui/components/JobsPanel.jsx";
+import { DashboardStrip } from "./ui/components/DashboardStrip.jsx";
+import { TabNav } from "./ui/components/TabNav.jsx";
+import { LogDrawer } from "./ui/components/LogDrawer.jsx";
+import { SaveDrawer } from "./ui/components/SaveDrawer.jsx";
+
+const TABS = [
+  { id: "town", label: "Town" },
+  { id: "workforce", label: "Workforce & Jobs" },
+  { id: "crafting", label: "Crafting" },
+];
 
 function App() {
   const {
@@ -26,23 +35,56 @@ function App() {
     importSave,
   } = useSimRun();
 
+  const [activeTab, setActiveTab] = useState("town");
+  const [logOpen, setLogOpen] = useState(false);
+  const [saveOpen, setSaveOpen] = useState(false);
+
   return (
     <main className="app">
-      <h1>Cove Gap</h1>
+      <div className="app-header">
+        <h1>Cove Gap</h1>
+        {state.alive && (
+          <div className="header-actions">
+            <button type="button" className="icon-button" onClick={() => setLogOpen(true)} aria-label="Activity log" title="Activity log">
+              📜
+            </button>
+            <button type="button" className="icon-button" onClick={() => setSaveOpen(true)} aria-label="Save / load" title="Save / load">
+              💾
+            </button>
+          </div>
+        )}
+      </div>
 
       {offlineSummary && <OfflineSummaryBanner summary={offlineSummary} onDismiss={dismissOfflineSummary} />}
 
       {state.alive ? (
         <>
-          <TownPanel state={state} registry={registry} />
-          <div className="panels">
-            <ResourcePanel state={state} registry={registry} />
-            <WorkforcePanel state={state} registry={registry} onAssign={assign} />
-            <JobsPanel state={state} registry={registry} activeJobs={activeJobs} onBuild={build} onSendOnMission={sendOnMission} />
-            <CraftingPanel state={state} registry={registry} onCraft={craft} />
-            <ActivityLog state={state} />
-            <SaveControls onExport={exportSave} onImport={importSave} />
-          </div>
+          <DashboardStrip state={state} registry={registry} />
+          <TabNav tabs={TABS} active={activeTab} onChange={setActiveTab} />
+
+          {activeTab === "town" && (
+            <div className="panels">
+              <TownPanel state={state} registry={registry} />
+              <ResourcePanel state={state} registry={registry} />
+              <JobsInProgress activeJobs={activeJobs} />
+            </div>
+          )}
+
+          {activeTab === "workforce" && (
+            <div className="panels">
+              <WorkforcePanel state={state} registry={registry} onAssign={assign} />
+              <AvailableJobs state={state} registry={registry} onBuild={build} onSendOnMission={sendOnMission} />
+            </div>
+          )}
+
+          {activeTab === "crafting" && (
+            <div className="panels">
+              <CraftingPanel state={state} registry={registry} onCraft={craft} />
+            </div>
+          )}
+
+          {logOpen && <LogDrawer state={state} onClose={() => setLogOpen(false)} />}
+          {saveOpen && <SaveDrawer onExport={exportSave} onImport={importSave} onClose={() => setSaveOpen(false)} />}
         </>
       ) : (
         <DeathScreen state={state} onStartNewRun={startNewRun} />
