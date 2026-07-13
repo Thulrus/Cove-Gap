@@ -1,11 +1,14 @@
 import { productionRate } from "../lib/productionRate.js";
 import { ProgressBar } from "./ProgressBar.jsx";
 import { DayNightIndicator } from "./DayNightIndicator.jsx";
-import { TICKS_PER_HOUR } from "../../sim/index.js";
+import { TICKS_PER_HOUR, doomTier } from "../../sim/index.js";
+
+const DOOM_VARIANT = { calm: undefined, uneasy: undefined, dread: "warn", close: "danger", consumed: "danger" };
 
 export function DashboardStrip({ state, registry }) {
   const healthPct = state.town.health / state.town.maxHealth;
   const healthVariant = healthPct < 0.3 ? "danger" : healthPct < 0.6 ? "warn" : undefined;
+  const tier = doomTier(state.doom);
 
   return (
     <div className="dashboard-strip">
@@ -22,6 +25,13 @@ export function DashboardStrip({ state, registry }) {
       <div className="panel">
         <p className="dashboard-stat-label">Defense</p>
         <p className="dashboard-stat-value">{state.town.defense}</p>
+      </div>
+
+      <div className="panel">
+        <p className="dashboard-stat-label">Unease</p>
+        <p className={`dashboard-stat-value${DOOM_VARIANT[tier.label] ? ` ${DOOM_VARIANT[tier.label]}` : ""}`}>
+          {tier.text}
+        </p>
       </div>
 
       <div className="panel">

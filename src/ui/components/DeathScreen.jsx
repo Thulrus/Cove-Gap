@@ -11,6 +11,7 @@ export function DeathScreen({ state, onStartNewRun }) {
         <span className="town-tile">Survived: {formatDuration(result.breakdown.ticksSurvived)}</span>
         <span className="town-tile">Zones discovered: {result.breakdown.zonesDiscovered}</span>
         <span className="town-tile">Quests completed: {result.breakdown.questsCompleted}</span>
+        <span className="town-tile">Peak unease: {result.breakdown.peakDoomTier}</span>
       </div>
       <button type="button" className="primary" onClick={() => onStartNewRun()}>
         Start New Run

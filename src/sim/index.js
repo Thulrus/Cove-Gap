@@ -21,6 +21,7 @@ export {
   formatDuration,
 } from "./core/time.js";
 export { computeScore, resolveDeath } from "./core/score.js";
+export { doomTier } from "./systems/doom.js";
 export {
   exportRunState,
   importRunState,

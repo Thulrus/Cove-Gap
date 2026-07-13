@@ -4,7 +4,7 @@
 
 import { createRng } from "./rng.js";
 
-export const RUN_STATE_VERSION = 2;
+export const RUN_STATE_VERSION = 3;
 export const META_STATE_VERSION = 1;
 
 // Game balance, not content: how many workers the town starts with. The cast
@@ -52,6 +52,8 @@ export function createInitialRunState(seed, registry) {
     nextMissionInstanceId: 1,
 
     town: { health: 100, maxHealth: 100, defense: 0 },
+    doom: 0,
+    peakDoom: 0,
 
     activityLog: [],
     createdAt: Date.now(),

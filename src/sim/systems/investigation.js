@@ -5,6 +5,7 @@
 import { chance, pick } from "../core/rng.js";
 import { createLogEntry } from "../core/log.js";
 import { evaluateRequirement } from "../content/requirements.js";
+import { addDoom, ZONE_DISCOVERY_DOOM_PER_DANGER } from "./doom.js";
 
 const DISCOVERY_CHANCE_PER_TICK = 0.15;
 
@@ -21,6 +22,7 @@ export function runInvestigationSystem(state, registry) {
 
   const zone = pick(state.rng, candidates);
   state.discoveredZones.push(zone.id);
+  addDoom(state, (zone.dangerLevel ?? 1) * ZONE_DISCOVERY_DOOM_PER_DANGER);
   log.push(
     createLogEntry("investigation", "zone_discovered", `Your scouts discover ${zone.name}.`, { zoneId: zone.id })
   );

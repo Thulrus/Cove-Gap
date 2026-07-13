@@ -5,13 +5,12 @@
 import { chance, pick } from "../core/rng.js";
 import { createLogEntry } from "../core/log.js";
 import { resolveRefEntities } from "../content/refs.js";
-
-const RAID_CHANCE_PER_TICK = 0.05;
+import { raidChanceForDoom } from "./doom.js";
 
 export function runEventsSystem(state, registry) {
   const log = [];
   if (state.pendingCombat) return { log }; // already resolving a prior raid
-  if (!chance(state.rng, RAID_CHANCE_PER_TICK)) return { log };
+  if (!chance(state.rng, raidChanceForDoom(state.doom))) return { log };
 
   const candidateZones = registry
     .allOfType("zone")

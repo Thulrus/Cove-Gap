@@ -1,20 +1,24 @@
-// Scoring/meta-progression hook. Weights and narrative text are placeholders
-// for now — the shape (reads the run log, returns a breakdown + summary) is
-// what matters so death-summary UI and meta-progression can build on it.
+// Scoring/meta-progression hook. Weights are placeholders for now — the
+// shape (reads the run log, returns a breakdown + summary) is what matters
+// so death-summary UI and meta-progression can build on it.
+
+import { doomTier } from "../systems/doom.js";
 
 /**
  * @param {object} runState
  * @param {import("./log.js").LogEntry[]} fullRunLog
  */
 export function computeScore(runState, _fullRunLog) {
+  const tier = doomTier(runState.peakDoom);
   return {
     score: 0,
     breakdown: {
       ticksSurvived: runState.tick,
       zonesDiscovered: runState.discoveredZones.length,
       questsCompleted: runState.completedQuests.length,
+      peakDoomTier: tier.label,
     },
-    summary: "Placeholder death summary — scoring is not implemented yet.",
+    summary: `${tier.text} The town held on as long as it could, and then it didn't.`,
   };
 }
 

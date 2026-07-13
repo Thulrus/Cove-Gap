@@ -29,6 +29,10 @@ function migrateRunState(data) {
       nextMissionInstanceId: 1,
     };
   }
+  if (data.version === 2) {
+    // v3 added the doom/awareness system.
+    data = { ...data, version: 3, doom: 0, peakDoom: 0 };
+  }
   if (data.version === RUN_STATE_VERSION) return data;
   throw new Error(`Cannot load run save: unknown version "${data.version}"`);
 }

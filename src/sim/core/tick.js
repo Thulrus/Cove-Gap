@@ -4,6 +4,7 @@
 // headless offline catch-up loop both just call this repeatedly.
 
 import { runProductionSystem } from "../systems/production.js";
+import { runDoomSystem } from "../systems/doom.js";
 import { runInvestigationSystem } from "../systems/investigation.js";
 import { runCraftingSystem } from "../systems/crafting.js";
 import { runConstructionSystem } from "../systems/construction.js";
@@ -19,6 +20,7 @@ import { appendActivityLog } from "./log.js";
 // one of them.
 const SYSTEMS_IN_ORDER = [
   runProductionSystem,
+  runDoomSystem,
   runInvestigationSystem,
   runCraftingSystem,
   runConstructionSystem,

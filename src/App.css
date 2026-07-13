@@ -66,6 +66,14 @@
   font-weight: 600;
 }
 
+.dashboard-stat-value.warn {
+  color: var(--color-warn);
+}
+
+.dashboard-stat-value.danger {
+  color: var(--color-danger);
+}
+
 /* Day/night sun-moon arc */
 .day-night-indicator {
   display: flex;
