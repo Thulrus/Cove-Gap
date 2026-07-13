@@ -64,6 +64,14 @@ const REQUIREMENT_HANDLERS = {
       return ctx.state.builtFacilities.includes(node.ref.id);
     },
   },
+  doomAtLeast: {
+    validate(node, path) {
+      assert(typeof node.value === "number", `${path}.value is required and must be a number`);
+    },
+    evaluate(node, ctx) {
+      return ctx.state.doom >= node.value;
+    },
+  },
   workersAssigned: {
     validate(node, path) {
       assert(node.ref && typeof node.ref.id === "string", `${path}.ref.id is required`);

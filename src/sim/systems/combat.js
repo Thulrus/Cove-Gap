@@ -9,9 +9,10 @@
 import { nextInt } from "../core/rng.js";
 import { createLogEntry } from "../core/log.js";
 import { resolveRefEntities, describeRef } from "../content/refs.js";
+import { describeMonsterInstance, instanceAttack, instanceWeaknesses } from "../content/monsterInstance.js";
 
-function findExploitedWeakness(state, registry, monster) {
-  for (const weaknessRef of monster.weaknesses ?? []) {
+function findExploitedWeakness(state, registry, weaknesses) {
+  for (const weaknessRef of weaknesses) {
     const matchingIds = new Set(resolveRefEntities(registry, "item", weaknessRef).map((item) => item.id));
     const held = Object.keys(state.inventory).some((itemId) => matchingIds.has(itemId) && state.inventory[itemId] > 0);
     if (held) return weaknessRef;
@@ -24,15 +25,21 @@ export function runCombatSystem(state, registry) {
   if (!state.pendingCombat) return { log };
 
   const monster = registry.getById("monster", state.pendingCombat.monsterId);
-  const exploitedWeakness = findExploitedWeakness(state, registry, monster);
-  const baseAttack = exploitedWeakness ? Math.round(monster.combat.attack / 2) : monster.combat.attack;
+  const modifier = state.pendingCombat.modifierId
+    ? registry.tryGetById("modifier", state.pendingCombat.modifierId)
+    : null;
+  const displayName = describeMonsterInstance(monster, modifier);
+
+  const exploitedWeakness = findExploitedWeakness(state, registry, instanceWeaknesses(monster, modifier));
+  const attack = instanceAttack(monster, modifier);
+  const baseAttack = exploitedWeakness ? Math.round(attack / 2) : attack;
 
   if (exploitedWeakness) {
     log.push(
       createLogEntry(
         "combat",
         "weakness_exploited",
-        `The town holds ${describeRef(exploitedWeakness)} — ${monster.name}'s attack falters.`,
+        `The town holds ${describeRef(exploitedWeakness)} — ${displayName}'s attack falters.`,
         { monsterId: monster.id, weakness: exploitedWeakness }
       )
     );
@@ -44,14 +51,14 @@ export function runCombatSystem(state, registry) {
   if (damage > 0) {
     state.town.health = Math.max(0, state.town.health - damage);
     log.push(
-      createLogEntry("combat", "town_damaged", `${monster.name} deals ${damage} damage to the town.`, {
+      createLogEntry("combat", "town_damaged", `${displayName} deals ${damage} damage to the town.`, {
         monsterId: monster.id,
         damage,
       })
     );
   } else {
     log.push(
-      createLogEntry("combat", "raid_repelled", `The town's defenses repel ${monster.name} without harm.`, {
+      createLogEntry("combat", "raid_repelled", `The town's defenses repel ${displayName} without harm.`, {
         monsterId: monster.id,
       })
     );

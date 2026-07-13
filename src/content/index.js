@@ -14,6 +14,8 @@ import { defenses } from "./defenses/index.js";
 import { facilities } from "./facilities/index.js";
 import { roles } from "./roles/index.js";
 import { missions } from "./missions/index.js";
+import { rites } from "./rites/index.js";
+import { modifiers } from "./modifiers/index.js";
 
 export const contentByType = {
   resource: resources,
@@ -28,4 +30,6 @@ export const contentByType = {
   facility: facilities,
   role: roles,
   mission: missions,
+  rite: rites,
+  modifier: modifiers,
 };

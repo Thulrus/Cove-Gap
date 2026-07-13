@@ -33,6 +33,10 @@ function migrateRunState(data) {
     // v3 added the doom/awareness system.
     data = { ...data, version: 3, doom: 0, peakDoom: 0 };
   }
+  if (data.version === 3) {
+    // v4 added lore/codex discovery tracking.
+    data = { ...data, version: 4, discoveredLore: [] };
+  }
   if (data.version === RUN_STATE_VERSION) return data;
   throw new Error(`Cannot load run save: unknown version "${data.version}"`);
 }

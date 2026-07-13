@@ -293,29 +293,74 @@ build on earlier ones.
 - Add Aspect-aware passive effects (resource drain from an aspected zone
   presence) as a small new system or an extension of `production.js`.
 
-**Phase 3 — Signature entities & the omen/evidence chain**
-- Pick one Aspect (Hunger is already scoped via the Hollow Boar example) and
-  build its full chain end-to-end: evidence lore entries → omen-track flag
-  progression → gated entry into a zone's raid pool → unique combat
-  behavior/weakness.
-- Extend zone `monsters: []` entries to support per-entry `requirements`.
-- Use this as the template for the remaining Aspects' signature entities
-  (Phase 3b, repeatable).
+**Phase 3 — Signature entities & the omen/evidence chain** ✅ done (Hunger)
 
-**Phase 4 — Rites & the faith-as-partial-ward loop**
-- New `rite` content type + a small `src/sim/systems/rites.js` (cost →
-  Aspect-targeted doom/defense effect).
-- At least one rite per Aspect, with in-fiction "misunderstanding" text.
-- Wire misapplied rites to raise doom slightly (mechanical punishment for
-  guessing wrong, discoverable rather than told).
+- [x] Built Hunger's full chain end-to-end: `hollow_boar` ("the Sow of
+  Widow's Ridge") has an `omenTrack` (`src/sim/systems/omens.js`) that flips
+  flags as doom rises; three evidence lore entries (`boarSignOne/Two/Three`)
+  unlock off those flags; a new zone (`widows_ridge`, gated behind
+  `widow_creek`) only makes the boar raid-eligible once the third flag is
+  set.
+- [x] Extended zone `monsters: []` entries to support per-entry
+  `requirements`, evaluated in `events.js` before a raid can pick that
+  entity.
+- [x] Added plumbing this depended on that didn't exist yet: a `lore`
+  discovery system (`src/sim/systems/lore.js`, `state.discoveredLore`) and a
+  minimal Codex tab (`CodexPanel.jsx`) — lore content had no reader before
+  this phase.
+- [ ] Phase 3b (repeat for Rot/Return, Growth/Root's own signature entity,
+  Water/Hollow, Stone/Watch) — not started.
+- **Balance note for later tuning**: Hunger's zone (`widows_ridge`) and
+  Growth/Root's zone (`pinewood_hollow`) both drain the `food` resource,
+  which stacks fast once both are discovered (~0.7/tick against a starting
+  pool of 20) — fine for proving the system works, but worth diversifying
+  drain targets across Aspects before balancing real runs.
 
-**Phase 5 — Procedural remix layer**
-- Start with monster tag-modifiers only (§4.2) — lowest-risk, immediately
-  increases perceived variety.
-- Prototype zone templating (§4.3) once modifiers are proven out; this is
-  the phase most likely to need a design revisit once it's in front of
-  actual playtests.
-- Seeded codex/evidence fragment composition.
+**Phase 4 — Rites & the faith-as-partial-ward loop** ✅ done (system + 1 rite)
+
+- [x] New `rite` content type (`cost`, `effect.aspectRef`/`doomDelta`,
+  `misunderstanding`) plus `performRite()` intent handler in
+  `src/sim/systems/rites.js` — same player-intent shape as
+  `startCraft`/`startBuild`, no queue, resolves immediately.
+- [x] A rite only lowers doom if its *actually*-warded Aspect has a
+  presence in a discovered zone right now; otherwise it's a misfire that
+  raises doom instead (`RITE_MISFIRE_DOOM`) — the mechanical form of "right
+  practice, wrong theology" and "guessing wrong is discoverable, not told."
+- [x] Authored one rite (`salt_the_threshold`, targets `water_hollow`,
+  Brotherhood believes it wards off "wandering spirits of the drowned
+  dead") to prove the system; wired a minimal `RitesPanel` (Codex tab) and
+  the `performRite` intent through `useSimRun`.
+- [ ] One rite per remaining Aspect — deferred alongside Phase 3b entity
+  work, since both are now the same kind of task: fill out the stable using
+  systems that already work.
+- **Effect scope note**: only `doomDelta` is implemented; the roadmap's
+  original sketch also mentioned a `defenseDelta`. Left out for now to avoid
+  inventing a second mechanic (a temporary "ward" buffer) before we have a
+  concrete need for it — revisit once a specific Aspect's rite calls for a
+  defensive rather than doom-reducing effect.
+
+**Phase 5 — Procedural remix layer** 🟡 started (monster modifiers only)
+
+- [x] Monster tag-modifiers (§4.2): new `modifier` content type
+  (`attackMod`, optional `weaknessAdd`, `descriptionFragment`) in
+  `src/content/modifiers/` (Gaunt, Bloated, Scarred). `events.js` rolls one
+  onto a monster at raid time (30% chance) and stores `modifierId` on
+  `state.pendingCombat`; `combat.js` resolves damage/weaknesses/display name
+  through it. A shared `src/sim/content/monsterInstance.js` composes base
+  monster + modifier so events.js's announcement and combat.js's resolution
+  always agree on name/attack/weaknesses.
+- [x] Monsters tagged `"ancient"` (i.e. signature entities like
+  `hollow_boar`) are excluded from modifier rolls — verified directly
+  (0/44 forced boar raids got a modifier) — the remix layer is for
+  rank-and-file fillers, not the stars, per §4.1.
+- [ ] Zone templating (§4.3) — not started. This is still flagged as the
+  biggest engine-level lift in this roadmap (touches run generation, not
+  just one system) and is deliberately deferred until modifiers have been
+  played with.
+- [ ] Seeded codex/evidence fragment composition — not started; natural
+  next step once there's more than one Aspect's worth of evidence lore to
+  draw fragments from (see Phase 3b).
+- [ ] Doom pacing seed variance — not started.
 
 **Phase 6 — Content scale-out**
 - Once the systems above are proven, this becomes mostly content

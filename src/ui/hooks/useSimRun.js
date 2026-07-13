@@ -22,6 +22,7 @@ import {
   startCraft,
   startBuild,
   startMission,
+  performRite,
   assignWorker,
   getActiveJobs,
   PROD_TICK_MS,
@@ -85,6 +86,12 @@ export function useSimRun() {
     forceRender();
   }
 
+  function performRiteIntent(riteId) {
+    performRite(stateRef.current, registryRef.current, riteId);
+    saveRunToStorage(stateRef.current);
+    forceRender();
+  }
+
   function assign(roleId, delta) {
     assignWorker(stateRef.current, registryRef.current, roleId, delta);
     saveRunToStorage(stateRef.current);
@@ -126,6 +133,7 @@ export function useSimRun() {
     craft,
     build,
     sendOnMission,
+    performRite: performRiteIntent,
     assign,
     activeJobs: getActiveJobs(stateRef.current, registryRef.current),
     startNewRun,

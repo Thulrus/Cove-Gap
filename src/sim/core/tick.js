@@ -6,6 +6,7 @@
 import { runProductionSystem } from "../systems/production.js";
 import { runAspectPresenceSystem } from "../systems/aspectPresence.js";
 import { runDoomSystem } from "../systems/doom.js";
+import { runOmenSystem } from "../systems/omens.js";
 import { runInvestigationSystem } from "../systems/investigation.js";
 import { runCraftingSystem } from "../systems/crafting.js";
 import { runConstructionSystem } from "../systems/construction.js";
@@ -14,15 +15,18 @@ import { runDefenseSystem } from "../systems/defense.js";
 import { runEventsSystem } from "../systems/events.js";
 import { runCombatSystem } from "../systems/combat.js";
 import { runQuestSystem } from "../systems/quests.js";
+import { runLoreSystem } from "../systems/lore.js";
 import { appendActivityLog } from "./log.js";
 
-// The systems below run in this fixed order per the sim design. Quest
-// progression is checked afterward — see systems/quests.js for why it isn't
-// one of them.
+// The systems below run in this fixed order per the sim design. Quest and
+// lore progression are checked at the end — see systems/quests.js for why
+// quests aren't tick-ordered with the rest, and systems/lore.js runs last so
+// it can see flags set by omens/quests earlier in the same tick.
 const SYSTEMS_IN_ORDER = [
   runProductionSystem,
   runAspectPresenceSystem,
   runDoomSystem,
+  runOmenSystem,
   runInvestigationSystem,
   runCraftingSystem,
   runConstructionSystem,
@@ -31,6 +35,7 @@ const SYSTEMS_IN_ORDER = [
   runEventsSystem,
   runCombatSystem,
   runQuestSystem,
+  runLoreSystem,
 ];
 
 /**

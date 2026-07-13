@@ -24,6 +24,8 @@ export const CONTENT_TYPES = [
   "facility",
   "role",
   "mission",
+  "rite",
+  "modifier",
 ];
 
 function validateResourceFields(entity, path) {
@@ -58,13 +60,25 @@ function validateMonsterFields(entity, path) {
     entity.resistances.forEach((ref, i) => validateEntityRef(ref, `${path}.resistances[${i}]`));
   }
   if (entity.aspectRef !== undefined) validateEntityRef(entity.aspectRef, `${path}.aspectRef`);
+  if (entity.omenTrack !== undefined) {
+    assertArray(entity.omenTrack, `${path}.omenTrack`);
+    entity.omenTrack.forEach((step, i) => {
+      assert(typeof step.doomThreshold === "number", `${path}.omenTrack[${i}].doomThreshold must be a number`);
+      assert(typeof step.flag === "string", `${path}.omenTrack[${i}].flag is required`);
+    });
+  }
 }
 
 function validateZoneFields(entity, path) {
   assert(typeof entity.dangerLevel === "number", `${path}.dangerLevel is required and must be a number`);
   if (entity.monsters !== undefined) {
     assertArray(entity.monsters, `${path}.monsters`);
-    entity.monsters.forEach((ref, i) => validateEntityRef(ref, `${path}.monsters[${i}]`));
+    entity.monsters.forEach((ref, i) => {
+      validateEntityRef(ref, `${path}.monsters[${i}]`);
+      if (ref.requirements !== undefined) {
+        validateRequirementNode(ref.requirements, `${path}.monsters[${i}].requirements`);
+      }
+    });
   }
   if (entity.aspectRef !== undefined) validateEntityRef(entity.aspectRef, `${path}.aspectRef`);
 }
@@ -157,6 +171,32 @@ function validateRoleFields(entity, path) {
   }
 }
 
+function validateRiteFields(entity, path) {
+  validateCostList(entity.cost ?? [], `${path}.cost`);
+  assert(entity.effect && typeof entity.effect === "object", `${path}.effect is required`);
+  assert(
+    entity.effect.aspectRef && typeof entity.effect.aspectRef.id === "string",
+    `${path}.effect.aspectRef.id is required`
+  );
+  assertPositiveNumber(entity.effect.doomDelta, `${path}.effect.doomDelta`);
+  assert(
+    typeof entity.misunderstanding === "string" && entity.misunderstanding.length > 0,
+    `${path}.misunderstanding is required`
+  );
+}
+
+function validateModifierFields(entity, path) {
+  if (entity.attackMod !== undefined) assert(typeof entity.attackMod === "number", `${path}.attackMod must be a number`);
+  if (entity.weaknessAdd !== undefined) {
+    assertArray(entity.weaknessAdd, `${path}.weaknessAdd`);
+    entity.weaknessAdd.forEach((ref, i) => validateEntityRef(ref, `${path}.weaknessAdd[${i}]`));
+  }
+  assert(
+    typeof entity.descriptionFragment === "string" && entity.descriptionFragment.length > 0,
+    `${path}.descriptionFragment is required`
+  );
+}
+
 function validateMissionFields(entity, path) {
   assert(typeof entity.roleId === "string", `${path}.roleId is required`);
   assert(entity.workerCost && typeof entity.workerCost === "object", `${path}.workerCost is required`);
@@ -184,6 +224,8 @@ const TYPE_VALIDATORS = {
   facility: validateFacilityFields,
   role: validateRoleFields,
   mission: validateMissionFields,
+  rite: validateRiteFields,
+  modifier: validateModifierFields,
 };
 
 export function validateEntity(entity, path) {

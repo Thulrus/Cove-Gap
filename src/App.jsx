@@ -9,6 +9,8 @@ import { TownPanel } from "./ui/components/TownPanel.jsx";
 import { WorkforcePanel } from "./ui/components/WorkforcePanel.jsx";
 import { JobsInProgress, AvailableJobs } from "./ui/components/JobsPanel.jsx";
 import { DashboardStrip } from "./ui/components/DashboardStrip.jsx";
+import { CodexPanel } from "./ui/components/CodexPanel.jsx";
+import { RitesPanel } from "./ui/components/RitesPanel.jsx";
 import { TabNav } from "./ui/components/TabNav.jsx";
 import { LogDrawer } from "./ui/components/LogDrawer.jsx";
 import { SaveDrawer } from "./ui/components/SaveDrawer.jsx";
@@ -17,6 +19,7 @@ const TABS = [
   { id: "town", label: "Town" },
   { id: "workforce", label: "Workforce & Jobs" },
   { id: "crafting", label: "Crafting" },
+  { id: "codex", label: "Codex" },
 ];
 
 function App() {
@@ -27,6 +30,7 @@ function App() {
     craft,
     build,
     sendOnMission,
+    performRite,
     assign,
     activeJobs,
     startNewRun,
@@ -80,6 +84,13 @@ function App() {
           {activeTab === "crafting" && (
             <div className="panels">
               <CraftingPanel state={state} registry={registry} onCraft={craft} />
+            </div>
+          )}
+
+          {activeTab === "codex" && (
+            <div className="panels">
+              <RitesPanel registry={registry} onPerformRite={performRite} />
+              <CodexPanel state={state} registry={registry} />
             </div>
           )}
 

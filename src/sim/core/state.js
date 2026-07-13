@@ -4,7 +4,7 @@
 
 import { createRng } from "./rng.js";
 
-export const RUN_STATE_VERSION = 3;
+export const RUN_STATE_VERSION = 4;
 export const META_STATE_VERSION = 1;
 
 // Game balance, not content: how many workers the town starts with. The cast
@@ -39,11 +39,12 @@ export function createInitialRunState(seed, registry) {
     flags: {},
 
     discoveredZones: [],
+    discoveredLore: [],
     builtDefenses: [],
     activeQuests: [], // { questId, stageIndex }
     completedQuests: [], // questId[]
     craftingQueue: [], // { recipeId, remainingTicks }
-    pendingCombat: null, // { monsterIds: string[] } while a raid is being resolved
+    pendingCombat: null, // { monsterId, zoneId, modifierId } while a raid is being resolved
 
     workers: { total: STARTING_WORKERS, assignments: {} }, // assignments[roleId] = count assigned
     builtFacilities: [],
