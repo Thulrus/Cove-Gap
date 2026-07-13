@@ -270,21 +270,25 @@ build on earlier ones.
 - [x] README rewritten as world intro + outline
 - [x] This roadmap
 
-**Phase 1 — Doom/Awareness system (small, high-impact)**
-- Add `state.doom`, replace flat `RAID_CHANCE_PER_TICK` with a doom-scaled
-  function in `events.js`.
-- Wire a few existing actions (zone discovery, mission dispatch into
-  high-danger zones) to bump doom.
-- Surface doom in the UI as flavor text/an "unease" readout, not a raw
-  number — keep the "you can't fully see the threat" feeling.
-- Update `computeScore`/death summary to report doom trajectory + which
-  entity/zone ended the run.
+**Phase 1 — Doom/Awareness system (small, high-impact)** ✅ done
 
-**Phase 2 — Aspects as a real tag**
-- Author `src/content/aspects/` (4–6 entries) from the lore doc's Aspect
-  list.
-- Tag existing monsters/zones (`hollowStalker`, `burrowGrub`,
-  `widowCreek`, `pinewoodHollow`) with an Aspect each — retrofit before
+- [x] Add `state.doom`/`peakDoom`, replace flat `RAID_CHANCE_PER_TICK` with a
+  doom-scaled function (`raidChanceForDoom`) in `src/sim/systems/doom.js`,
+  read from `events.js`.
+- [x] Wire zone discovery to bump doom (scaled by zone danger level) in
+  `investigation.js`. Mission-based doom bumps not yet wired — still open.
+- [x] Surface doom in the UI as ambient tier text ("unease") in
+  `DashboardStrip`, never a raw number.
+- [x] `computeScore`/death summary reports peak doom tier reached.
+
+**Phase 2 — Aspects as a real tag** ✅ done
+
+- [x] Authored `src/content/aspects/` (Hunger, Rot/Return, Growth/Root,
+  Water/Hollow, Stone/Watch) as a first-class content type (schema +
+  registry support added).
+- [x] Tagged existing monsters/zones (`hollowStalker` → water_hollow,
+  `burrowGrub` → growth_root, `widowCreek` → water_hollow, `pinewoodHollow`
+  → growth_root) with `aspectRef` — retrofit before
   adding new content.
 - Add Aspect-aware passive effects (resource drain from an aspected zone
   presence) as a small new system or an extension of `production.js`.

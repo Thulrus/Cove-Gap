@@ -14,6 +14,7 @@ import { validateEffectNode } from "./effects.js";
 export const CONTENT_TYPES = [
   "resource",
   "item",
+  "aspect",
   "monster",
   "zone",
   "recipe",
@@ -56,6 +57,7 @@ function validateMonsterFields(entity, path) {
     assertArray(entity.resistances, `${path}.resistances`);
     entity.resistances.forEach((ref, i) => validateEntityRef(ref, `${path}.resistances[${i}]`));
   }
+  if (entity.aspectRef !== undefined) validateEntityRef(entity.aspectRef, `${path}.aspectRef`);
 }
 
 function validateZoneFields(entity, path) {
@@ -63,6 +65,25 @@ function validateZoneFields(entity, path) {
   if (entity.monsters !== undefined) {
     assertArray(entity.monsters, `${path}.monsters`);
     entity.monsters.forEach((ref, i) => validateEntityRef(ref, `${path}.monsters[${i}]`));
+  }
+  if (entity.aspectRef !== undefined) validateEntityRef(entity.aspectRef, `${path}.aspectRef`);
+}
+
+function validateAspectFields(entity, path) {
+  if (entity.signature === undefined) return;
+  assert(typeof entity.signature === "object", `${path}.signature must be an object`);
+  if (entity.signature.resourceDrain !== undefined) {
+    assertArray(entity.signature.resourceDrain, `${path}.signature.resourceDrain`);
+    entity.signature.resourceDrain.forEach((drain, i) => {
+      assert(
+        drain.ref && typeof drain.ref.id === "string",
+        `${path}.signature.resourceDrain[${i}].ref.id is required`
+      );
+      assert(
+        typeof drain.amountPerTick === "number",
+        `${path}.signature.resourceDrain[${i}].amountPerTick must be a number`
+      );
+    });
   }
 }
 
@@ -153,6 +174,7 @@ function validateMissionFields(entity, path) {
 const TYPE_VALIDATORS = {
   resource: validateResourceFields,
   item: validateItemFields,
+  aspect: validateAspectFields,
   monster: validateMonsterFields,
   zone: validateZoneFields,
   recipe: validateRecipeFields,

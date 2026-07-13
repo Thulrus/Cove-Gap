@@ -4,6 +4,7 @@ export const hollowStalker = {
   name: "Hollow Stalker",
   description: "Something man-shaped that walks the tree line at dusk.",
   tags: ["nocturnal", "cunning"],
+  aspectRef: { id: "water_hollow" },
   combat: { health: 35, attack: 14, defense: 4 },
   weaknesses: [{ tag: "iron" }],
 };

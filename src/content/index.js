@@ -4,6 +4,7 @@
 
 import { resources } from "./resources/index.js";
 import { items } from "./items/index.js";
+import { aspects } from "./aspects/index.js";
 import { monsters } from "./monsters/index.js";
 import { zones } from "./zones/index.js";
 import { recipes } from "./recipes/index.js";
@@ -17,6 +18,7 @@ import { missions } from "./missions/index.js";
 export const contentByType = {
   resource: resources,
   item: items,
+  aspect: aspects,
   monster: monsters,
   zone: zones,
   recipe: recipes,
